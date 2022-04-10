@@ -1,0 +1,14 @@
+/* Created by Christopher Borer
+April 9th 2022 */
+
+h1 {
+  background: linear-gradient(0.25turn, #0080ff, 10%, #400080);
+  text-align: center;
+  height: 2em;
+  padding-top: .5em;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.container {
+    margin-left: 0%;
+}
