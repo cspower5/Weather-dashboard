@@ -10,13 +10,13 @@ var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
 //function to get city input from user.
 $("#searchBtn").submit(function() {
-  var city = $("#currrentSearch").val();
+  var city = $("currrentSearch").val();
   console.log(city);
   //Call to geet the current weather
   getCurrentWeather(city);
 });
 
-//function to fetch data from weather api.
+//function to fetch data from weather api
 var getCurrentWeather = function (city) {
   let getCurrentWeatherUrl = apiUrl + "?q=" + city + "&appid=" + apiKey;
   console.log(getCurrentWeatherUrl);
