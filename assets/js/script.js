@@ -16,6 +16,7 @@ $("#searchForm").submit(function (event) {
   event.preventDefault();
   city = $("#currentSearch").val();
   getCurrentWeather(city);
+  document.getElementById('currentSearch').value = "";
 });
 
 //function to fetch data from weather api
@@ -32,7 +33,8 @@ var getCurrentWeather = function (city) {
     })
     .then((response) => {
       // do whatever you want with the JSON response
-      // console.log(response);
+      responseHandler();
+      console.log('this is my ' + response);
     })
     .catch((error) => {
       // Handle the error
@@ -40,14 +42,23 @@ var getCurrentWeather = function (city) {
       //   console.log(error);
     });
 };
+var responseHandler = function() {
+    if(document.getElementsByClassName('verifyCity').length === 1) {
+        let verifyCityEl = document.getElementsByClassName('verifyCity');
+        console.log(verifyCityEl);
+        verifyCityEl.remove(); 
+    }
+}
 
 //Handle display a message to input a valid city name
 var errorHandler = function (error) {
-  if (error) {
-    var verifyCityEl = document.createElement("h2");
-    var verifyCityMsg = document.getElementsByClassName("verifyCity");
-    verifyCityMsg[0].append("Please Enter a Valid City!!", verifyCityEl);
+    if (error && document.getElementsByClassName('verifyCity').length === 0) {
+    let verifyCityEl = document.createElement("h2");
+    verifyCityEl.classList.add('verifyCity');
+    verifyCityEl.textContent = "Please Enter a Valid City!!"
+    document.querySelector('header').append(verifyCityEl);
   }
+
 };
 
 //fuction to fetch index from api
