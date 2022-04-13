@@ -1,6 +1,8 @@
 /* Created by Christopher Borer
 April 9th 2022 */
-
+body{
+    background-color: antiquewhite;
+}
 h1 {
   background: linear-gradient(0.25turn, #0080ff, 10%, #400080);
   text-align: center;
@@ -8,6 +10,14 @@ h1 {
   padding-top: 0.5em;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
+}
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: start;
+    font-size: 24px;
+}
+form {
+    padding-bottom: .5em;
 }
 .verifyCity {
   background: linear-gradient(0.25turn, #ff00cc, 10%, #800000);
@@ -18,8 +28,31 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 4em;
 }
+.current-weather {
+    border: solid black;
+    border-radius: .5em;
+}
+.past-cities {
+    border: solid black;
+    border-radius: .5em;
+}
+.past-weather {
+    border: solid black;
+    border-radius: .5em;
+}
+#searchForm {
+    border: solid black;
+    border-radius: .5em;
+}
 .container {
   margin-left: 0%;
 }
-/* Hide the error message until error occurs */
-body.start .verifyCity { display: none; }
+#searchForm h2 {
+    padding-left: 0%;
+}
+#searchForm button {
+    margin-top: .5em;
+}
+
+
+

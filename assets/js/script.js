@@ -43,10 +43,11 @@ var getCurrentWeather = function (city) {
     });
 };
 var responseHandler = function() {
-    if(document.getElementsByClassName('verifyCity').length === 1) {
+    if(document.getElementsByClassName('verifyCity').length > 0) {
         let verifyCityEl = document.getElementsByClassName('verifyCity');
         console.log(verifyCityEl);
         verifyCityEl.remove(); 
+        return;
     }
 }
 
