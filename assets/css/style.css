@@ -28,15 +28,15 @@ form {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 4em;
 }
-.current-weather {
+.currentWeather {
     border: solid black;
     border-radius: .5em;
 }
-.past-cities {
+.pastCities {
     border: solid black;
     border-radius: .5em;
 }
-.past-weather {
+.pastWeather {
     border: solid black;
     border-radius: .5em;
 }
