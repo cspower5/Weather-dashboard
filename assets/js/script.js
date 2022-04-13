@@ -5,14 +5,16 @@
 //variables
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+var city = "";
 //Elements
+
+
 //Data
 
 //function to get city input from user.
-$("#searchBtn").submit(function() {
-  var city = $("currrentSearch").val();
-  console.log(city);
-  //Call to geet the current weather
+$("#searchForm").submit(function (event) {
+  event.preventDefault();
+  city = $("#currentSearch").val();
   getCurrentWeather(city);
 });
 
@@ -30,14 +32,26 @@ var getCurrentWeather = function (city) {
     })
     .then((response) => {
       // do whatever you want with the JSON response
-      console.log(response);
+      // console.log(response);
     })
     .catch((error) => {
       // Handle the error
-      console.log(error);
+      errorHandler(error);
+      //   console.log(error);
     });
 };
+
+//Handle display a message to input a valid city name
+var errorHandler = function (error) {
+  if (error) {
+    var verifyCityEl = document.createElement("h2");
+    var verifyCityMsg = document.getElementsByClassName("verifyCity");
+    verifyCityMsg[0].append("Please Enter a Valid City!!", verifyCityEl);
+  }
+};
+
 //fuction to fetch index from api
 //funciton fetch 5 day forcast from api
 
 //function calls
+
