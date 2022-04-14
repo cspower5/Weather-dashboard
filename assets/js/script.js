@@ -5,7 +5,7 @@
 //variables
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-var oneCallUrl = "https://api.openweathermap.org/data/2.5/uvi/forecast?";
+var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 var city = "";
 // var uvIndex = {};
 //Elements
@@ -23,11 +23,7 @@ $("#searchForm").submit(function (event) {
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
   let getCurrentWeatherUrl =
-    apiUrl + 
-    "?q=" + 
-    city + 
-    "&units=imperial" + 
-    "&appid=" + apiKey;
+    apiUrl + "?q=" + city + "&units=imperial" + "&appid=" + apiKey;
   //   console.log(getCurrentWeatherUrl);
   fetch(getCurrentWeatherUrl)
     .then((response) => {
@@ -62,7 +58,7 @@ var errorHandler = function (error) {
   }
 };
 //Write Current weather to the page
-var renderCurrrentWeather = function (response) {
+var renderCurrrentWeather = async function (response) {
   //set all the variables to be render to the current weather
   const name = response.name;
   const date = new Date(response.dt * 1000).toLocaleDateString();
@@ -70,20 +66,20 @@ var renderCurrrentWeather = function (response) {
   const temp = Math.round(response.main.temp);
   const wind = Math.round(response.wind.speed);
   const humidity = response.main.humidity;
-  const uvIndex = getUVIndex(response);
-//   console.log(temp, +wind, +humidity, uvIndex);
+  const uvIndex = await getUVIndex(response);
+  //   console.log(temp, +wind, +humidity, uvIndex);
   document.querySelector(".currentWeather").innerHTML = `
         <h2>${name} ${date} <img src="http://openweathermap.org/img/wn/${icon}@2x.png">
         <br>Temp: ${temp}
         <br> Wind: ${wind}
         <br> Humidity: ${humidity}
-        <br> UVIndex:${uvIndex}
+        <br> UVIndex:${uvIndex.current.uvi}
         </h2>
     `;
-    console.log(uvIndex);
+  console.log(uvIndex.current);
 };
 //Get UV Index valaue
-var getUVIndex = function(response){
+var getUVIndex = async function (response) {
   const lat = response.coord.lat;
   const lon = response.coord.lon;
   const uviUrl =
@@ -97,11 +93,11 @@ var getUVIndex = function(response){
     "units=imperial" +
     "&appid=" +
     apiKey;
-    console.log(uviUrl);
-    fetch(uviUrl)
-      .then(response => response.json())
-      .then(data => console.log(data));
-  }
+  console.log(uviUrl);
+  fetch(uviUrl);
+  let data = await fetch(uviUrl);
+  return await data.json();
+};
 //fuction to fetch index from api
 //funciton fetch 5 day forcast from api
 
