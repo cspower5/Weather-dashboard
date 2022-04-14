@@ -6,6 +6,7 @@
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
+var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?"
 var city = "";
 // var uvIndex = {};
 //Elements
@@ -38,6 +39,7 @@ var getCurrentWeather = function (city) {
       // do whatever you want with the JSON response
       responseHandler();
       renderCurrrentWeather(response);
+      renderForecast(response);
     })
     .catch((error) => {
       // Handle the error
@@ -45,18 +47,7 @@ var getCurrentWeather = function (city) {
       console.error(error);
     });
 };
-var responseHandler = function () {
-  document.querySelector(".verifyCity")?.remove();
-};
-//Handle display a message to input a valid city name
-var errorHandler = function (error) {
-  if (error && document.getElementsByClassName("verifyCity").length === 0) {
-    let verifyCityEl = document.createElement("h2");
-    verifyCityEl.classList.add("verifyCity");
-    verifyCityEl.textContent = "Please Enter a Valid City!!";
-    document.querySelector("header").append(verifyCityEl);
-  }
-};
+
 //Write Current weather to the page
 var renderCurrrentWeather = async function (response) {
   //set all the variables to be render to the current weather
@@ -76,7 +67,7 @@ var renderCurrrentWeather = async function (response) {
         <br> UVIndex:${uvIndex.current.uvi}
         </h2>
     `;
-  console.log(uvIndex.current);
+//   console.log(uvIndex.current);
 };
 //Get UV Index valaue
 var getUVIndex = async function (response) {
@@ -93,11 +84,52 @@ var getUVIndex = async function (response) {
     "units=imperial" +
     "&appid=" +
     apiKey;
-  console.log(uviUrl);
+//   console.log(uviUrl);
   fetch(uviUrl);
   let data = await fetch(uviUrl);
   return await data.json();
 };
+
+var renderForecast = function(response) {
+  const lat = response.coord.lat;
+  const lon = response.coord.lon;
+  const numDays = 5;
+  const dailyUrl =
+    forecastUrl +
+    "lat=" +
+    lat +
+    "&" +
+    "lon=" +
+    lon +
+    "&cnt=" + 
+    numDays +
+    "&units=imperial" +
+    "&appid=" +
+    apiKey;
+    // console.log(response);
+    console.log(dailyUrl);
+    fetch(dailyUrl);
+    let dailyData = fetch(dailyUrl);
+    console.log(dailyData);
+
+
+    for(i = 1; i <= 5; i++) {
+    let day = "day" + i;
+    console.log(day);
+    }
+}
+var responseHandler = function () {
+    document.querySelector(".verifyCity")?.remove();
+  };
+  //Handle display a message to input a valid city name
+  var errorHandler = function (error) {
+    if (error && document.getElementsByClassName("verifyCity").length === 0) {
+      let verifyCityEl = document.createElement("h2");
+      verifyCityEl.classList.add("verifyCity");
+      verifyCityEl.textContent = "Please Enter a Valid City!!";
+      document.querySelector("header").append(verifyCityEl);
+    }
+  };
 //fuction to fetch index from api
 //funciton fetch 5 day forcast from api
 
