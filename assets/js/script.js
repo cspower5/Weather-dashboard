@@ -6,7 +6,7 @@
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?"
+var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 var city = "";
 // var uvIndex = {};
 //Elements
@@ -67,7 +67,7 @@ var renderCurrrentWeather = async function (response) {
         <br> UVIndex:${uvIndex.current.uvi}
         </h2>
     `;
-//   console.log(uvIndex.current);
+  //   console.log(uvIndex.current);
 };
 //Get UV Index valaue
 var getUVIndex = async function (response) {
@@ -84,16 +84,17 @@ var getUVIndex = async function (response) {
     "units=imperial" +
     "&appid=" +
     apiKey;
-//   console.log(uviUrl);
+  //   console.log(uviUrl);
   fetch(uviUrl);
   let data = await fetch(uviUrl);
   return await data.json();
 };
 
-var renderForecast = function(response) {
+var renderForecast = async function (response) {
   const lat = response.coord.lat;
   const lon = response.coord.lon;
   const numDays = 5;
+  const days = [".day-1", ".day-2", ".day-3", ".day-4", ".day-5"];
   const dailyUrl =
     forecastUrl +
     "lat=" +
@@ -101,35 +102,95 @@ var renderForecast = function(response) {
     "&" +
     "lon=" +
     lon +
-    "&cnt=" + 
-    numDays +
-    "&units=imperial" +
     "&appid=" +
-    apiKey;
-    // console.log(response);
-    console.log(dailyUrl);
-    fetch(dailyUrl);
-    let dailyData = fetch(dailyUrl);
-    console.log(dailyData);
+    apiKey +
+    "&units=imperial";
+  // console.log(response);
+  console.log(dailyUrl);
+  fetch(dailyUrl);
+  let dailyData = await fetch(dailyUrl).then(function (res) {
+    return res.json();
+  });
 
-
-    for(i = 1; i <= 5; i++) {
-    let day = "day" + i;
-    console.log(day);
+  for (const day of days) {
+    switch (day) {
+      case ".day-1":
+        document.querySelector(
+          day
+        ).innerHTML = `<div>Date:${dailyData.list[0].dt}
+            <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[0].weather[0].icon}@2x.png">
+            <br>Temp:${dailyData.list[0].main.temp}
+            <br>wind:${dailyData.list[0].wind.speed}
+            <br>Humidity:${dailyData.list[0].main.humidity}
+            `;
+        break;
+      case ".day-2":
+        document.querySelector(
+          day
+        ).innerHTML = `<div>Date:${dailyData.list[1].dt}
+        <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[1].weather[1].icon}@2x.png">
+        <br>Temp:${dailyData.list[1].main.temp}
+        <br>wind:${dailyData.list[1].wind.speed}
+        <br>Humidity:${dailyData.list[1].main.humidity}
+        `;
+        break;
+        case ".day-3":
+          document.querySelector(
+            day
+          ).innerHTML = `<div>Date:${dailyData.list[2].dt}
+          <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[2].weather[2].icon}@2x.png">
+          <br>Temp:${dailyData.list[2].main.temp}
+          <br>wind:${dailyData.list[2].wind.speed}
+          <br>Humidity:${dailyData.list[2].main.humidity}
+          `;
+          break;
+          case ".day-4":
+            document.querySelector(
+              day
+            ).innerHTML = `<div>Date:${dailyData.list[3].dt}
+            <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[3].weather[3].icon}@2x.png">
+            <br>Temp:${dailyData.list[3].main.temp}
+            <br>wind:${dailyData.list[3].wind.speed}
+            <br>Humidity:${dailyData.list[3].main.humidity}
+            `;
+            break;
+            case ".day-5":
+              document.querySelector(
+                day
+              ).innerHTML = `<div>Date:${dailyData.list[4].dt}
+              <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[4].weather[4].icon}@2x.png">
+              <br>Temp:${dailyData.list[4].main.temp}
+              <br>wind:${dailyData.list[4].wind.speed}
+              <br>Humidity:${dailyData.list[4].main.humidity}
+              `;
+              break;
+      default:
+        console.log(`Sorry, we are out of.`);
     }
-}
+    console.log(dailyData.list[0].dt);
+    // let dayEl = document.createElement('div');
+    // dayEl.classList.add(day);
+    // document.querySelector(".pastWeather").append(dayEl);
+
+    // <div>${name} ${date} <img src="http://openweathermap.org/img/wn/${icon}@2x.png">
+    // <br>Temp: ${temp}
+    // <br> Wind: ${wind}
+    // <br> Humidity: ${humidity}
+    // <br> UVIndex:${uvIndex.current.uvi}`;
+  }
+};
 var responseHandler = function () {
-    document.querySelector(".verifyCity")?.remove();
-  };
-  //Handle display a message to input a valid city name
-  var errorHandler = function (error) {
-    if (error && document.getElementsByClassName("verifyCity").length === 0) {
-      let verifyCityEl = document.createElement("h2");
-      verifyCityEl.classList.add("verifyCity");
-      verifyCityEl.textContent = "Please Enter a Valid City!!";
-      document.querySelector("header").append(verifyCityEl);
-    }
-  };
+  document.querySelector(".verifyCity")?.remove();
+};
+//Handle display a message to input a valid city name
+var errorHandler = function (error) {
+  if (error && document.getElementsByClassName("verifyCity").length === 0) {
+    let verifyCityEl = document.createElement("h2");
+    verifyCityEl.classList.add("verifyCity");
+    verifyCityEl.textContent = "Please Enter a Valid City!!";
+    document.querySelector("header").append(verifyCityEl);
+  }
+};
 //fuction to fetch index from api
 //funciton fetch 5 day forcast from api
 
