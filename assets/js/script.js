@@ -128,7 +128,7 @@ var renderForecast = async function (response) {
         document.querySelector(
           day
         ).innerHTML = `<div>Date:${dailyData.list[1].dt}
-        <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[1].weather[1].icon}@2x.png">
+        <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[1].weather[0].icon}@2x.png">
         <br>Temp:${dailyData.list[1].main.temp}
         <br>wind:${dailyData.list[1].wind.speed}
         <br>Humidity:${dailyData.list[1].main.humidity}
@@ -138,7 +138,7 @@ var renderForecast = async function (response) {
           document.querySelector(
             day
           ).innerHTML = `<div>Date:${dailyData.list[2].dt}
-          <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[2].weather[2].icon}@2x.png">
+          <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[2].weather[0].icon}@2x.png">
           <br>Temp:${dailyData.list[2].main.temp}
           <br>wind:${dailyData.list[2].wind.speed}
           <br>Humidity:${dailyData.list[2].main.humidity}
@@ -148,7 +148,7 @@ var renderForecast = async function (response) {
             document.querySelector(
               day
             ).innerHTML = `<div>Date:${dailyData.list[3].dt}
-            <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[3].weather[3].icon}@2x.png">
+            <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[3].weather[0].icon}@2x.png">
             <br>Temp:${dailyData.list[3].main.temp}
             <br>wind:${dailyData.list[3].wind.speed}
             <br>Humidity:${dailyData.list[3].main.humidity}
@@ -158,7 +158,7 @@ var renderForecast = async function (response) {
               document.querySelector(
                 day
               ).innerHTML = `<div>Date:${dailyData.list[4].dt}
-              <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[4].weather[4].icon}@2x.png">
+              <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.list[4].weather[0].icon}@2x.png">
               <br>Temp:${dailyData.list[4].main.temp}
               <br>wind:${dailyData.list[4].wind.speed}
               <br>Humidity:${dailyData.list[4].main.humidity}
