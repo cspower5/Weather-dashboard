@@ -6,8 +6,9 @@
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+// var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 var city = "";
+var localStorageKey = 'cityName';
 //Elements
 
 //Data
@@ -16,10 +17,16 @@ var city = "";
 $("#searchForm").submit(function (event) {
   event.preventDefault();
   city = $("#currentSearch").val();
-  localStorage.setItem('cityName', city);
+  saveStorage(city);
   getCurrentWeather(city);
   document.getElementById("currentSearch").value = "";
 });
+
+var renderPastCities = function() {
+  const pastCities = getStorage();
+  console.log(pastCities);
+};
+renderPastCities();
 
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
@@ -111,90 +118,37 @@ var renderForecast = async function (response) {
   let dailyData = await fetch(dailyUrl).then(function (res) {
     return res.json();
   });
-  
+  let i = 1;
   for (const day of days) {
-    let i = 0;
-    console.log(day + " " + i);
     let date = new Date(dailyData.daily[i].dt * 1000).toLocaleDateString();
-    let icon = dailyData.current.weather[i].icon;
+    let icon = dailyData.current.weather[0].icon;
     let temp = Math.round(dailyData.daily[i].temp.max);
     let wind = Math.round(dailyData.daily[i].wind_speed);
     let humidity = Math.round(dailyData.daily[i].humidity)
     document.querySelector(
             day
-            ).innerHTML = `<div>Date:${date}
-              <br>icon:<img src="http://openweathermap.org/img/wn/${icon}@2x.png">
+            ).innerHTML = `<div class=${day}
+              Date:${date}
+              <br><img src="http://openweathermap.org/img/wn/${icon}@2x.png">
               <br>Temp:${temp}
               <br>wind:${wind}
               <br>Humidity:${humidity}
               `;
-    ++i;
-    console.log('incremented ' + i);
+    ;
+    // console.log('incremented ' + i);
+    i++;
   }
-
-    // switch (day) {
-    //   case ".day-1":
-    //     let date = new Date(dailyData.daily[0].dt * 1000).toLocaleDateString();
-        
-    //     document.querySelector(
-    //       day
-    //       ).innerHTML = `<div>Date:${date}
-    //         <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.current.weather[0].icon}@2x.png">
-    //         <br>Temp:${dailyData.daily[0].temp.max}
-    //         <br>wind:${dailyData.daily[0].wind_speed}
-    //         <br>Humidity:${dailyData.daily[0].humidity}
-    //         `;
-    //     break;
-    //   case ".day-2":
-    //     date = new Date(dailyData.daily[0].dt * 1000).toLocaleDateString();
-    //     document.querySelector(
-    //       day
-    //       ).innerHTML = `<div>Date:${date}
-    //         <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.current.weather[0].icon}@2x.png">
-    //         <br>Temp:${dailyData.daily[1].temp.max}
-    //         <br>wind:${dailyData.daily[1].wind_speed}
-    //         <br>Humidity:${dailyData.daily[1].humidity}
-    //         `;
-    //     break;
-    //     case ".day-3":
-    //       date = new Date(dailyData.daily[2].dt * 1000).toLocaleDateString();
-    //     document.querySelector(
-    //       day
-    //       ).innerHTML = `<div>Date:${date}
-    //         <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.current.weather[0].icon}@2x.png">
-    //         <br>Temp:${dailyData.daily[2].temp.max}
-    //         <br>wind:${dailyData.daily[2].wind_speed}
-    //         <br>Humidity:${dailyData.daily[2].humidity}
-    //         `;
-    //     break;
-    //       case ".day-4":
-    //         date = new Date(dailyData.daily[3].dt * 1000).toLocaleDateString();
-    //     document.querySelector(
-    //       day
-    //       ).innerHTML = `<div>Date:${date}
-    //         <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.current.weather[0].icon}@2x.png">
-    //         <br>Temp:${dailyData.daily[3].temp.max}
-    //         <br>wind:${dailyData.daily[3].wind_speed}
-    //         <br>Humidity:${dailyData.daily[3].humidity}
-    //         `;
-    //     break;
-    //     case ".day-5":
-    //     date = new Date(dailyData.daily[4].dt * 1000).toLocaleDateString();
-    //     document.querySelector(
-    //       day
-    //       ).innerHTML = `<div>Date:${date}
-    //         <br>icon:<img src="http://openweathermap.org/img/wn/${dailyData.current.weather[0].icon}@2x.png">
-    //         <br>Temp:${dailyData.daily[4].temp.max}
-    //         <br>wind:${dailyData.daily[4].wind_speed}
-    //         <br>Humidity:${dailyData.daily[4].humidity}
-    //         `;
-    //     break;
-    //   default:
-    //     console.log(`Sorry, we are out of.`);
-    // }
-    // console.log(dailyData.list[0].dt);
-  //}
 };
+
+function getStorage(){
+	const pastCities = localStorage.getItem(localStorageKey);
+	if (!pastCities) return [];
+	return JSON.parse(pastCities);
+}
+function saveStorage(city) {
+  localStorage.setItem(localStorageKey, JSON.stringify(city));
+}
+
 var responseHandler = function () {
   document.querySelector(".verifyCity")?.remove();
 };

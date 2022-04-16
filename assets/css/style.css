@@ -40,6 +40,10 @@ form {
     border: solid black;
     border-radius: .5em;
 }
+.pastWeather div {
+    margin: .5em;
+    border: solid black;
+}
 #searchForm {
     border: solid black;
     border-radius: .5em;
