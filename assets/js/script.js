@@ -9,6 +9,7 @@ var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 // var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 var city = "";
 var localStorageKey = 'cityName';
+var searchHistory = [];
 //Elements
 
 //Data
@@ -100,7 +101,7 @@ var renderForecast = async function (response) {
   const lat = response.coord.lat;
   const lon = response.coord.lon;
   const days = [".day-1", ".day-2", ".day-3", ".day-4", ".day-5"];
-  const dailyUrl =
+    const dailyUrl =
     // forecastUrl +
     oneCallUrl +
     "lat=" +
@@ -120,14 +121,16 @@ var renderForecast = async function (response) {
   });
   let i = 1;
   for (const day of days) {
+    
     let date = new Date(dailyData.daily[i].dt * 1000).toLocaleDateString();
+    console.log(date);
     let icon = dailyData.current.weather[0].icon;
     let temp = Math.round(dailyData.daily[i].temp.max);
     let wind = Math.round(dailyData.daily[i].wind_speed);
     let humidity = Math.round(dailyData.daily[i].humidity)
     document.querySelector(
             day
-            ).innerHTML = `<div class=${day}
+            ).innerHTML = `<div 
               Date:${date}
               <br><img src="http://openweathermap.org/img/wn/${icon}@2x.png">
               <br>Temp:${temp}
@@ -135,8 +138,7 @@ var renderForecast = async function (response) {
               <br>Humidity:${humidity}
               `;
     ;
-    // console.log('incremented ' + i);
-    i++;
+  i++;
   }
 };
 
@@ -146,7 +148,8 @@ function getStorage(){
 	return JSON.parse(pastCities);
 }
 function saveStorage(city) {
-  localStorage.setItem(localStorageKey, JSON.stringify(city));
+  searchHistory.push(city);
+  localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
 }
 
 var responseHandler = function () {
