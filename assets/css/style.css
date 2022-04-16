@@ -1,5 +1,9 @@
 /* Created by Christopher Borer
 April 9th 2022 */
+* {
+    margin: none;
+    padding: none;
+}
 body{
     background-color: antiquewhite;
 }
@@ -20,7 +24,10 @@ form {
     padding-bottom: .5em;
 }
 .container {
-    margin-left: 0%;
+    max-width: 100%;
+}
+.row {
+    width: 100%;
 }
 .verifyCity {
   background: linear-gradient(0.25turn, #ff00cc, 10%, #800000);
@@ -40,13 +47,15 @@ form {
     /* border-radius: .5em; */
     margin-top: 1.5em; 
 }
-/* .pastWeather {
-    border: solid black;
-    border-radius: .5em;
-} */
+ .pastWeather {
+     display: flex;
+    flex-wrap: wrap;
+    /* width: 20%; */
+}
 .pastWeather div {
     margin: .5em;
     border: solid black;
+    border-radius: .5em;
 }
 /* #searchForm {
     border: solid black;
