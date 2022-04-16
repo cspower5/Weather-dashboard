@@ -14,34 +14,36 @@
   <body>
     <header>
       <h1>Weather Dashboard</h1>
-      <!-- <div class="verifyCity"></div> -->
     </header>
     <main>
         <div class="container">
-            <div class="row">
-              <form class="col-4" id="searchForm">
-                <h2 class="col-8">Search for a City:</h2>
-                <input type="text" class="col-8" id="currentSearch"></input>
-                <button type="submit" class="col-8" id="searchBtn">Search</button>
+          <div class="row">
+          <!-- -- <div class=" colrow"> --             -->
+            <div class="col-6">
+              <form id="searchForm">
+                <h2>Search for a City:</h2>
+                <input type="text" id="currentSearch"></input>
+                <button type="submit" id="searchBtn">Search</button>
               </form>
-              <div class="col-8 currentWeather">
-                  <h2>Current Weather</h2>
-              </div>
-              <div class="w-100"></div>
-              <div class="col-4 pastCities">
+              <div class="pastCities">
                 <h2>Past searches</h2>
               </div>
-              <div class="col-8  row pastWeather">
-                <h2 class="col-12">5 Day Forcast</h2>
-                <!-- <div class="day"></div> -->
-                <div class="day-1"></div>
-                <div class="day-2"></div>
-                <div class="day-3"></div>
-                <div class="day-4"></div>
-                <div class="day-5"></div>
+            </div> 
+            <div class="col-6">
+              <div class="currentWeather">
+                  <h2>Current Weather</h2>
               </div>
-            </div>
+              <!-- <div class="w-100"></div> -->
+              <!-- -- <div class="col-4 pastCities">
+                <h2>Past searches</h2>
+              </div> -- -->
+              <div class="pastWeather">
+                <h2>5 Day Forcast</h2>
+              </div>
+            <!-- -- </div> -- -->
+          </div>
         </div>
+        <!-- </div> -->
     </main>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/script.js"></script>

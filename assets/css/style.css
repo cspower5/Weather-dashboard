@@ -19,6 +19,9 @@ h2 {
 form {
     padding-bottom: .5em;
 }
+.container {
+    margin-left: 0%;
+}
 .verifyCity {
   background: linear-gradient(0.25turn, #ff00cc, 10%, #800000);
   text-align: center;
@@ -33,24 +36,22 @@ form {
     border-radius: .5em;
 }
 .pastCities {
+    border-top: solid black;
+    /* border-radius: .5em; */
+    margin-top: 1.5em; 
+}
+/* .pastWeather {
     border: solid black;
     border-radius: .5em;
-}
-.pastWeather {
-    border: solid black;
-    border-radius: .5em;
-}
+} */
 .pastWeather div {
     margin: .5em;
     border: solid black;
 }
-#searchForm {
+/* #searchForm {
     border: solid black;
     border-radius: .5em;
-}
-.container {
-  margin-left: 0%;
-}
+} */
 #searchForm h2 {
     padding-left: 0%;
 }
