@@ -6,7 +6,6 @@
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-// var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 var city = "";
 var localStorageKey = "cityName";
 var searchHistory = [];
@@ -14,6 +13,7 @@ var searchHistory = [];
 var btnEl = document.createElement("button");
 
 //Data
+var pastCities = [];
 
 //function to get city input from user.
 $("#searchForm").submit(function (event) {
@@ -30,7 +30,7 @@ var renderPastCities = function () {
   for (pastCity of pastCities) {
     let btnEl = document.createElement("button");
     btnEl.innerHTML = pastCity;
-    console.log(btnEl.textContent);
+    // console.log(btnEl.textContent);
     btnEl.addEventListener("click", (event) => {
       event.preventDefault();
       getCurrentWeather(btnEl.textContent);
@@ -46,7 +46,19 @@ function getStorage() {
   return JSON.parse(pastCities);
 }
 function saveStorage(city) {
-  searchHistory.push(city);
+  if (localStorage.getItem(localStorageKey) === null) {
+    pastCities = [];
+    // console.log(pastCities + 'has no items');
+  } else {
+    pastCities = JSON.parse(localStorage.getItem(localStorageKey));
+    console.log(pastCities);
+  }
+  // const newCity = JSON.stringify(city);
+  // console.log(newCity);
+  if (!pastCities.includes(city)) {
+    //  pastCities.push(city);
+     searchHistory.push(pastCities);
+  }
   localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
 }
 
