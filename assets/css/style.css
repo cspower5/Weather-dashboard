@@ -49,6 +49,11 @@ form {
     border-top: solid black;
     margin-top: 1.5em; 
 }
+.pastCities button {
+    border-top: solid black;
+    margin-top: .5rem; 
+    width: 100%;
+}
  .pastWeather {
      display: flex;
     flex-wrap: wrap;

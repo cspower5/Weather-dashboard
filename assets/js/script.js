@@ -8,12 +8,13 @@ var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 var city = "";
 var localStorageKey = "cityName";
-var searchHistory = [];
+// var searchHistory = [];
 //Elements
 var btnEl = document.createElement("button");
 
 //Data
 var pastCities = [];
+var limitCities = [];
 
 //function to get city input from user.
 $("#searchForm").submit(function (event) {
@@ -23,14 +24,13 @@ $("#searchForm").submit(function (event) {
   getCurrentWeather(city);
   saveStorage(city);
 });
-
 // renderPastCities();
 var renderPastCities = function () {
   const pastCities = getStorage();
+  document.querySelector(".pastCities").innerHTML = '';
   for (pastCity of pastCities) {
     let btnEl = document.createElement("button");
     btnEl.innerHTML = pastCity;
-    // console.log(btnEl.textContent);
     btnEl.addEventListener("click", (event) => {
       event.preventDefault();
       getCurrentWeather(btnEl.textContent);
@@ -41,9 +41,9 @@ var renderPastCities = function () {
  
 };
 function getStorage() {
-  const pastCities = localStorage.getItem(localStorageKey);
-  if (!pastCities) return [];
-  return JSON.parse(pastCities);
+    const pastCities = localStorage.getItem(localStorageKey);
+    return JSON.parse(pastCities);
+
 }
 function saveStorage(city) {
   if (localStorage.getItem(localStorageKey) === null) {
@@ -55,14 +55,12 @@ function saveStorage(city) {
   }
   // const newCity = JSON.stringify(city);
   // console.log(newCity);
-  if (!pastCities.includes(city)) {
-    //  pastCities.push(city);
-     searchHistory.push(pastCities);
+  if (!pastCities.includes(city.toUpperCase())) {
+     pastCities.push(city.toUpperCase());
+    //  console.log(searchHistory);
   }
-  localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
+  localStorage.setItem(localStorageKey, JSON.stringify(pastCities));
 }
-
-
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
   let getCurrentWeatherUrl =
