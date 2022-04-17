@@ -6,32 +6,46 @@
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-// var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?";
-var city = "";
+// var city = "";
 var localStorageKey = "cityName";
 var searchHistory = [];
 //Elements
+var formEL = document.getElementById('searchForm').addEventListener('submit', function(event) {
 
-//Data
-
-//function to get city input from user.
-$("#searchForm").submit(function (event) {
+// var getCity = function(event) {
   event.preventDefault();
-  city = $("#currentSearch").val();
-  document.getElementById("currentSearch").value = "";
-  getCurrentWeather(city);
-  saveStorage(city);
+
+  var city = document.getElementsByID("h2").textContent();
   console.log(city);
+  
 });
+//function to get city input from user.
+// $("#searchForm").submit(function (event) {
+//   event.preventDefault();
+//   city = $("#currentSearch").val();
+//   document.getElementById("currentSearch").value = "";
+//   getCurrentWeather(city);
+//   saveStorage(city);
+//   console.log(city);
+// });
+// var searchCity = function() {
+//   searchEl = d
+//   console.log(searchEl);
+//   submitEvt = document.getElementById("#searchForm").addEventListener("submit", function(event) {
+//   event.preventDefault();
+//   city = submitEvt.val();
+//   console.log(city);
+//   // document.getElementById("currentSearch").value = "";
+//   console.log(city);
+//   });
+  
+// }
+// searchCity();
 
 var renderPastCities = function () {
   const pastCities = getStorage();
   console.log(pastCities);
-  // cityNameEl = document.createElement(button);
-
-  // console.log(pastCities);
-};
-// renderPastCities();
+}
 
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
@@ -39,26 +53,49 @@ var getCurrentWeather = function (city) {
     apiUrl + "?q=" + city + "&units=imperial" + "&appid=" + apiKey;
   // console.log(getCurrentWeatherUrl);
   fetch(getCurrentWeatherUrl)
-    .then((response) => {
-      // console.log('status', response.status);
-      if (response.status >= 200 && response.status <= 299) {
-        return response.json();
-      } else {
-        throw Error(response.statusText);
-      }
-    })
-    .then((response) => {
-      // do whatever you want with the JSON response
-      responseHandler();
-      renderCurrrentWeather(response);
-      renderForecast(response);
-      console.log(response);
-    })
-    .catch((error) => {
-      // Handle the error
-      errorHandler(error);
-      console.error(error);
+    .then(handleErrors)
+    .then(function(response) {
+    return response.json();
+    }).catch(function(error) {
+       console.log(error);
     });
+    // .then((response) => {
+    //   // console.log('status', response.status);
+    //   if (response.status >= 200 && response.status <= 299) {
+    //     return response.json();
+    //   } else {
+    //     throw Error(response.statusText);
+    //   }
+    // })
+    // .then((response) => {
+    //   // do whatever you want with the JSON response
+       responseHandler();
+       renderCurrrentWeather(response);
+       renderForecast(response);
+    //   console.log(response);
+    // })
+    // .catch((error) => {
+    //   // Handle the error
+    //   errorHandler(error);
+    //   console.error(error);
+    // });
+};
+var handleErrors = function (response) {
+  if (!response.ok) {
+    errorHandler(error);
+    //  throw Error(response.statusText);
+     console.log(response.status);
+  }
+  return response;
+}
+//Handle display a message to input a valid city name
+var errorHandler = function (error) {
+  if (error && document.getElementsByClassName("verifyCity").length === 0) {
+    let verifyCityEl = document.createElement("h2");
+    verifyCityEl.classList.add("verifyCity");
+    verifyCityEl.textContent = "Please Enter a Valid City!!";
+    document.querySelector("header").append(verifyCityEl);
+  }
 };
 
 //Write Current weather to the page
@@ -161,15 +198,9 @@ function saveStorage(city) {
 var responseHandler = function () {
   document.querySelector(".verifyCity")?.remove();
 };
-//Handle display a message to input a valid city name
-var errorHandler = function (error) {
-  if (error && document.getElementsByClassName("verifyCity").length === 0) {
-    let verifyCityEl = document.createElement("h2");
-    verifyCityEl.classList.add("verifyCity");
-    verifyCityEl.textContent = "Please Enter a Valid City!!";
-    document.querySelector("header").append(verifyCityEl);
-  }
-};
+
+
+
 //fuction to fetch index from api
 //funciton fetch 5 day forcast from api
 
