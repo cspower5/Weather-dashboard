@@ -11,6 +11,7 @@ var city = "";
 var localStorageKey = "cityName";
 var searchHistory = [];
 //Elements
+var btnEl = document.createElement("button");
 
 //Data
 
@@ -21,26 +22,42 @@ $("#searchForm").submit(function (event) {
   document.getElementById("currentSearch").value = "";
   getCurrentWeather(city);
   saveStorage(city);
-  console.log(city);
 });
 
+// renderPastCities();
 var renderPastCities = function () {
   const pastCities = getStorage();
-  console.log(pastCities);
-  // cityNameEl = document.createElement(button);
-
-  // console.log(pastCities);
+  for (pastCity of pastCities) {
+    let btnEl = document.createElement("button");
+    btnEl.innerHTML = pastCity;
+    console.log(btnEl.textContent);
+    btnEl.addEventListener("click", (event) => {
+      event.preventDefault();
+      getCurrentWeather(btnEl.textContent);
+    });
+    document.querySelector(".pastCities").appendChild(btnEl);
+    
+  }
+ 
 };
-// renderPastCities();
+function getStorage() {
+  const pastCities = localStorage.getItem(localStorageKey);
+  if (!pastCities) return [];
+  return JSON.parse(pastCities);
+}
+function saveStorage(city) {
+  searchHistory.push(city);
+  localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
+}
+
 
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
   let getCurrentWeatherUrl =
     apiUrl + "?q=" + city + "&units=imperial" + "&appid=" + apiKey;
-  // console.log(getCurrentWeatherUrl);
+
   fetch(getCurrentWeatherUrl)
     .then((response) => {
-      // console.log('status', response.status);
       if (response.status >= 200 && response.status <= 299) {
         return response.json();
       } else {
@@ -52,12 +69,11 @@ var getCurrentWeather = function (city) {
       responseHandler();
       renderCurrrentWeather(response);
       renderForecast(response);
-      console.log(response);
+      renderPastCities();
     })
     .catch((error) => {
       // Handle the error
       errorHandler(error);
-      console.error(error);
     });
 };
 
@@ -79,7 +95,6 @@ var renderCurrrentWeather = async function (response) {
         <br> UVIndex:${uvIndex.current.uvi}
         </h2>
     `;
-  //   console.log(uvIndex.current);
 };
 //Get UV Index valaue
 var getUVIndex = async function (response) {
@@ -96,7 +111,6 @@ var getUVIndex = async function (response) {
     "units=imperial" +
     "&appid=" +
     apiKey;
-  //   console.log(uviUrl);
   fetch(uviUrl);
   let data = await fetch(uviUrl);
   return await data.json();
@@ -118,12 +132,9 @@ var renderForecast = async function (response) {
     "&appid=" +
     apiKey +
     "&units=imperial";
-  // console.log(response);
   fetch(dailyUrl);
   let dailyData = await fetch(dailyUrl).then(function (res) {
-    // console.log(res.json());
     return res.json();
-    
   });
   let i = 1;
   document.querySelector(".pastWeather").textContent = "";
@@ -143,20 +154,8 @@ var renderForecast = async function (response) {
                       `;
     document.querySelector(".pastWeather").append(newDiv);
     i++;
-    console.log(dailyData);
   }
 };
-
-function getStorage() {
-  const pastCities = localStorage.getItem(localStorageKey);
-  if (!pastCities) return [];
-  return JSON.parse(pastCities);
-}
-function saveStorage(city) {
-  searchHistory.push(city);
-  localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
-  console.log(searchHistory);
-}
 
 var responseHandler = function () {
   document.querySelector(".verifyCity")?.remove();
