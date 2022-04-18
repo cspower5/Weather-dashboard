@@ -8,14 +8,14 @@ var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 var city = "";
 var localStorageKey = "cityName";
-// var searchHistory = [];
+
 //Elements
 var btnEl = document.createElement("button");
 
 //Data
 var pastCities = [];
 var limitCities = [];
-
+ 
 //function to get city input from user.
 $("#searchForm").submit(function (event) {
   event.preventDefault();
@@ -24,7 +24,7 @@ $("#searchForm").submit(function (event) {
   getCurrentWeather(city);
   saveStorage(city);
 });
-// renderPastCities();
+// renderPastCities creates buttons of to submit past searcches;
 var renderPastCities = function () {
   const pastCities = getStorage();
   document.querySelector(".pastCities").innerHTML = '';
@@ -38,28 +38,24 @@ var renderPastCities = function () {
     document.querySelector(".pastCities").appendChild(btnEl);
     
   }
- 
 };
+//Pull the past searches from localStorage
 function getStorage() {
     const pastCities = localStorage.getItem(localStorageKey);
     return JSON.parse(pastCities);
 
 }
+//Add searches to localStorage to be rendered to the screen
 function saveStorage(city) {
   if (localStorage.getItem(localStorageKey) === null) {
     pastCities = [];
-    // console.log(pastCities + 'has no items');
   } else {
     pastCities = JSON.parse(localStorage.getItem(localStorageKey));
-    console.log(pastCities);
   }
-  // const newCity = JSON.stringify(city);
-  // console.log(newCity);
   if (!pastCities.includes(city.toUpperCase())) {
-     pastCities.push(city.toUpperCase());
-    //  console.log(searchHistory);
+     pastCities.unshift(city.toUpperCase());
   }
-  localStorage.setItem(localStorageKey, JSON.stringify(pastCities));
+  localStorage.setItem(localStorageKey, JSON.stringify(pastCities.slice(0,5)));
 }
 //function to fetch data from weather api
 var getCurrentWeather = function (city) {
@@ -75,7 +71,7 @@ var getCurrentWeather = function (city) {
       }
     })
     .then((response) => {
-      // do whatever you want with the JSON response
+      // Calls functions
       responseHandler();
       renderCurrrentWeather(response);
       renderForecast(response);
@@ -87,7 +83,7 @@ var getCurrentWeather = function (city) {
     });
 };
 
-//Write Current weather to the page
+//Writes the Current weather to the page
 var renderCurrrentWeather = async function (response) {
   //set all the variables to be render to the current weather
   const name = response.name;
@@ -121,11 +117,10 @@ var getUVIndex = async function (response) {
     "units=imperial" +
     "&appid=" +
     apiKey;
-  fetch(uviUrl);
   let data = await fetch(uviUrl);
   return await data.json();
 };
-
+//Show the 5 day forecast for the searched city
 var renderForecast = async function (response) {
   const lat = response.coord.lat;
   const lon = response.coord.lon;
@@ -166,7 +161,7 @@ var renderForecast = async function (response) {
     i++;
   }
 };
-
+//Creates the element to print to the screen when a improper city name is entered
 var responseHandler = function () {
   document.querySelector(".verifyCity")?.remove();
 };
@@ -179,7 +174,5 @@ var errorHandler = function (error) {
     document.querySelector("header").append(verifyCityEl);
   }
 };
-//fuction to fetch index from api
-//funciton fetch 5 day forcast from api
-
-//function calls
+//Show the past searches on load
+renderPastCities();

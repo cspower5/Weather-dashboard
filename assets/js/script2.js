@@ -5,20 +5,17 @@
 //variables
 var apiKey = "0c390c97a57230e6547b396d84ff33a8";
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?";
-// var city = "";
 var localStorageKey = "cityName";
 var searchHistory = [];
 //Elements
-var formEL = document.getElementById('searchForm').addEventListener('submit', function(event) {
-
 // var getCity = function(event) {
-  event.preventDefault();
-
-  var city = document.getElementsByID("h2").textContent();
-  console.log(city);
+  var formEL = document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var city = document.getElementsByID("h2").textContent();
+    console.log(city);
   
-});
+  });
+};
 //function to get city input from user.
 // $("#searchForm").submit(function (event) {
 //   event.preventDefault();
@@ -81,10 +78,9 @@ var getCurrentWeather = function (city) {
     // });
 };
 var handleErrors = function (response) {
+
   if (!response.ok) {
-    errorHandler(error);
-    //  throw Error(response.statusText);
-     console.log(response.status);
+    
   }
   return response;
 }
